@@ -20,20 +20,20 @@ class ClassifyService
     public function execute()
     {
         print_r($this->labelProbabilities);
-        $c1 = $this->classify(['d', 'g', 'e', 'dm'], $this->labelProbabilities, $this->probabilityOfChordsInLabels);
+        $c1 = $this->classify(['d', 'g', 'e', 'dm']);
         print_r($c1);
 
         print_r($this->labelProbabilities);
-        $c2 = $this->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m'], $this->labelProbabilities, $this->probabilityOfChordsInLabels);
+        $c2 = $this->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
         print_r($c2);
     }
 
-    private function classify($chords, $labelProbabilities, $probabilityOfChordsInLabels){
+    private function classify($chords){
         $classified = [];
-        foreach (array_keys($labelProbabilities) as $obj) {
-            $first = $labelProbabilities[$obj] + 1.01;
+        foreach (array_keys($this->labelProbabilities) as $obj) {
+            $first = $this->labelProbabilities[$obj] + 1.01;
             foreach ($chords as $chord) {
-                $probabilityOfChordInLabel = $probabilityOfChordsInLabels[$obj][$chord];
+                $probabilityOfChordInLabel = $this->probabilityOfChordsInLabels[$obj][$chord];
                 if (!isset($probabilityOfChordInLabel)) {
                     $first + 1.01;
                 } else {
