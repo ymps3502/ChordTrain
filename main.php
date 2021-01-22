@@ -103,5 +103,5 @@ function classify($chords, $labelProbabilities, $probabilityOfChordsInLabels){
             $classified[$obj] = $first;
         }
     }
-    print_r($classified);
+    return $classified;
 }
