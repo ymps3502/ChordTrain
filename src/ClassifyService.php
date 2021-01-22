@@ -15,7 +15,15 @@ class ClassifyService
         global $chordCountsInLabels;
         global $probabilityOfChordsInLabels;
 
-        require __DIR__ . './../main.php';
+        $song_11 = [];
+        $songs = [];
+        $labels = [];
+        $allChords = [];
+        $labelCounts = [];
+        $labelProbabilities = [];
+        $chordCountsInLabels = [];
+        $probabilityOfChordsInLabels = [];
+
         $this->trainSongs();
 
         print_r($labelProbabilities);
