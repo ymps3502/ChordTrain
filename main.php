@@ -107,6 +107,3 @@ function classify($chords){
     }
     print_r($classified);
 }
-
-classify(['d', 'g', 'e', 'dm']);
-classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);

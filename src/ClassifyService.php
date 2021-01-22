@@ -16,5 +16,8 @@ class ClassifyService
         global $probabilityOfChordsInLabels;
 
         require __DIR__ . './../main.php';
+
+        classify(['d', 'g', 'e', 'dm']);
+        classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
     }
 }
