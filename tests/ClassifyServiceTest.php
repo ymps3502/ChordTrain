@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use ChordTrain\Classify;
 use ChordTrain\ClassifyService;
 use PHPUnit\Framework\TestCase;
 
@@ -40,6 +41,16 @@ Array
 
         $service = new ClassifyService();
 
-        $service->execute();
+        [$labelProbabilities, $probabilityOfChordsInLabels] = $service->execute();
+
+        $classify = new Classify($labelProbabilities, $probabilityOfChordsInLabels);
+
+        print_r($labelProbabilities);
+        $c1 = $classify->classify(['d', 'g', 'e', 'dm']);
+        print_r($c1);
+
+        print_r($labelProbabilities);
+        $c2 = $classify->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
+        print_r($c2);
     }
 }

@@ -11,27 +11,15 @@ class ClassifyService
     private $labelProbabilities = [];
     private $chordCountsInLabels = [];
     private $probabilityOfChordsInLabels = [];
-    /**
-     * @var Classify
-     */
-    private $classify;
 
     public function __construct()
     {
         $this->trainSongs();
-
-        $this->classify = new Classify($this->labelProbabilities, $this->probabilityOfChordsInLabels);
     }
 
     public function execute()
     {
-        print_r($this->labelProbabilities);
-        $c1 = $this->classify->classify(['d', 'g', 'e', 'dm']);
-        print_r($c1);
-
-        print_r($this->labelProbabilities);
-        $c2 = $this->classify->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
-        print_r($c2);
+        return [$this->labelProbabilities, $this->probabilityOfChordsInLabels];
     }
 
     private function trainSongs(): void
