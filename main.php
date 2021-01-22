@@ -94,7 +94,7 @@ function classify($chords){
     print_r($ttal);
     $classified = [];
     foreach (array_keys($ttal) as $obj) {
-        $first = $GLOBALS['labelProbabilities'][$obj] + 1.01;
+        $first = $ttal[$obj] + 1.01;
         foreach ($chords as $chord) {
             $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$obj][$chord];
             if (!isset($probabilityOfChordInLabel)) {
