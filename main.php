@@ -89,8 +89,7 @@ setLabelProbabilities();
 setChordCountsInLabels();
 setProbabilityOfChordsInLabels();
 
-function classify($chords){
-    $labelProbabilities = $GLOBALS['labelProbabilities'];
+function classify($chords, $labelProbabilities){
     print_r($labelProbabilities);
     $classified = [];
     foreach (array_keys($labelProbabilities) as $obj) {
