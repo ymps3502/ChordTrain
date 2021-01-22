@@ -88,20 +88,3 @@ train($bulletproof, 'hard');
 setLabelProbabilities();
 setChordCountsInLabels();
 setProbabilityOfChordsInLabels();
-
-function classify($chords, $labelProbabilities, $probabilityOfChordsInLabels){
-    $classified = [];
-    foreach (array_keys($labelProbabilities) as $obj) {
-        $first = $labelProbabilities[$obj] + 1.01;
-        foreach ($chords as $chord) {
-            $probabilityOfChordInLabel = $probabilityOfChordsInLabels[$obj][$chord];
-            if (!isset($probabilityOfChordInLabel)) {
-                $first + 1.01;
-            } else {
-                $first = $first * ($probabilityOfChordInLabel + 1.01);
-            }
-            $classified[$obj] = $first;
-        }
-    }
-    return $classified;
-}
