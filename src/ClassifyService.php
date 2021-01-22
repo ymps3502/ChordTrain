@@ -11,38 +11,27 @@ class ClassifyService
     private $labelProbabilities = [];
     private $chordCountsInLabels = [];
     private $probabilityOfChordsInLabels = [];
+    /**
+     * @var Classify
+     */
+    private $classify;
 
     public function __construct()
     {
         $this->trainSongs();
+
+        $this->classify = new Classify($this->labelProbabilities, $this->probabilityOfChordsInLabels);
     }
 
     public function execute()
     {
         print_r($this->labelProbabilities);
-        $c1 = $this->classify(['d', 'g', 'e', 'dm']);
+        $c1 = $this->classify->classify(['d', 'g', 'e', 'dm']);
         print_r($c1);
 
         print_r($this->labelProbabilities);
-        $c2 = $this->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
+        $c2 = $this->classify->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
         print_r($c2);
-    }
-
-    private function classify($chords){
-        $classified = [];
-        foreach (array_keys($this->labelProbabilities) as $obj) {
-            $first = $this->labelProbabilities[$obj] + 1.01;
-            foreach ($chords as $chord) {
-                $probabilityOfChordInLabel = $this->probabilityOfChordsInLabels[$obj][$chord];
-                if (!isset($probabilityOfChordInLabel)) {
-                    $first + 1.01;
-                } else {
-                    $first = $first * ($probabilityOfChordInLabel + 1.01);
-                }
-                $classified[$obj] = $first;
-            }
-        }
-        return $classified;
     }
 
     private function trainSongs(): void
