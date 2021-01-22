@@ -4,34 +4,24 @@ namespace ChordTrain;
 
 class ClassifyService
 {
+    private $songs = [];
+    private $allChords = [];
+    private $labels = [];
+    private $labelCounts = [];
+    private $labelProbabilities = [];
+    private $chordCountsInLabels = [];
+    private $probabilityOfChordsInLabels = [];
+
     public function execute()
     {
-        global $song_11;
-        global $songs;
-        global $labels;
-        global $allChords;
-        global $labelCounts;
-        global $labelProbabilities;
-        global $chordCountsInLabels;
-        global $probabilityOfChordsInLabels;
-
-        $song_11 = [];
-        $songs = [];
-        $labels = [];
-        $allChords = [];
-        $labelCounts = [];
-        $labelProbabilities = [];
-        $chordCountsInLabels = [];
-        $probabilityOfChordsInLabels = [];
-
         $this->trainSongs();
 
-        print_r($labelProbabilities);
-        $c1 = $this->classify(['d', 'g', 'e', 'dm'], $labelProbabilities, $probabilityOfChordsInLabels);
+        print_r($this->labelProbabilities);
+        $c1 = $this->classify(['d', 'g', 'e', 'dm'], $this->labelProbabilities, $this->probabilityOfChordsInLabels);
         print_r($c1);
 
-        print_r($labelProbabilities);
-        $c2 = $this->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m'], $labelProbabilities, $probabilityOfChordsInLabels);
+        print_r($this->labelProbabilities);
+        $c2 = $this->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m'], $this->labelProbabilities, $this->probabilityOfChordsInLabels);
         print_r($c2);
     }
 
@@ -82,44 +72,44 @@ class ClassifyService
 
     function train($chords, $label)
     {
-        $GLOBALS['songs'][] = [$label, $chords];
-        $GLOBALS['label'][] = $label;
+        $this->songs[] = [$label, $chords];
+        $this->labels[] = $label;
         for ($i = 0; $i < count($chords); $i++) {
-            if (!in_array($chords[$i], $GLOBALS['allChords'])) {
-                $GLOBALS['allChords'][] = $chords[$i];
+            if (!in_array($chords[$i], $this->allChords)) {
+                $this->allChords[] = $chords[$i];
             }
         }
-        if (!!(in_array($label, array_keys($GLOBALS['labelCounts'])))) {
-            $GLOBALS['labelCounts'][$label] = $GLOBALS['labelCounts'][$label] + 1;
+        if (!!(in_array($label, array_keys($this->labelCounts)))) {
+            $this->labelCounts[$label] = $this->labelCounts[$label] + 1;
         } else {
-            $GLOBALS['labelCounts'][$label] = 1;
+            $this->labelCounts[$label] = 1;
         }
     }
 
     function getNumberOfSongs()
     {
-        return count($GLOBALS['songs']);
+        return count($this->songs);
     }
 
     function setLabelProbabilities()
     {
-        foreach (array_keys($GLOBALS['labelCounts']) as $label) {
+        foreach (array_keys($this->labelCounts) as $label) {
             $numberOfSongs = $this->getNumberOfSongs();
-            $GLOBALS['labelProbabilities'][$label] = $GLOBALS['labelCounts'][$label] / $numberOfSongs;
+            $this->labelProbabilities[$label] = $this->labelCounts[$label] / $numberOfSongs;
         }
     }
 
     function setChordCountsInLabels()
     {
-        foreach ($GLOBALS['songs'] as $i) {
-            if (!isset($GLOBALS['chordCountsInLabels'][$i[0]])) {
-                $GLOBALS['chordCountsInLabels'][$i[0]] = [];
+        foreach ($this->songs as $i) {
+            if (!isset($this->chordCountsInLabels[$i[0]])) {
+                $this->chordCountsInLabels[$i[0]] = [];
             }
             foreach ($i[1] as $j) {
-                if ($GLOBALS['chordCountsInLabels'][$i[0]][$j] > 0) {
-                    $GLOBALS['chordCountsInLabels'][$i[0]][$j] = $GLOBALS['chordCountsInLabels'][$i[0]][$j] + 1;
+                if ($this->chordCountsInLabels[$i[0]][$j] > 0) {
+                    $this->chordCountsInLabels[$i[0]][$j] = $this->chordCountsInLabels[$i[0]][$j] + 1;
                 } else {
-                    $GLOBALS['chordCountsInLabels'][$i[0]][$j] = 1;
+                    $this->chordCountsInLabels[$i[0]][$j] = 1;
                 }
             }
         }
@@ -127,10 +117,10 @@ class ClassifyService
 
     function setProbabilityOfChordsInLabels()
     {
-        $GLOBALS['probabilityOfChordsInLabels'] = $GLOBALS['chordCountsInLabels'];
-        foreach (array_keys($GLOBALS['probabilityOfChordsInLabels']) as $i) {
-            foreach (array_keys($GLOBALS['probabilityOfChordsInLabels'][$i]) as $j) {
-                $GLOBALS['probabilityOfChordsInLabels'][$i][$j] = $GLOBALS['probabilityOfChordsInLabels'][$i][$j] * 1.0 / count($GLOBALS['songs']);
+        $this->probabilityOfChordsInLabels = $this->chordCountsInLabels;
+        foreach (array_keys($this->probabilityOfChordsInLabels) as $i) {
+            foreach (array_keys($this->probabilityOfChordsInLabels[$i]) as $j) {
+                $this->probabilityOfChordsInLabels[$i][$j] = $this->probabilityOfChordsInLabels[$i][$j] * 1.0 / count($this->songs);
             }
         }
     }
