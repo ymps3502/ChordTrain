@@ -12,10 +12,13 @@ class ClassifyService
     private $chordCountsInLabels = [];
     private $probabilityOfChordsInLabels = [];
 
-    public function execute()
+    public function __construct()
     {
         $this->trainSongs();
+    }
 
+    public function execute()
+    {
         print_r($this->labelProbabilities);
         $c1 = $this->classify(['d', 'g', 'e', 'dm'], $this->labelProbabilities, $this->probabilityOfChordsInLabels);
         print_r($c1);
