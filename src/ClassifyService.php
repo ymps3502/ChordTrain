@@ -89,7 +89,7 @@ class ClassifyService
         $probabilityOfChordsInLabels = $chordCountsInLabels;
         foreach (array_keys($probabilityOfChordsInLabels) as $i) {
             foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
-                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / count($this->songs);
+                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
             }
         }
         return $probabilityOfChordsInLabels;
