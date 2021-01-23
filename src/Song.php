@@ -17,4 +17,14 @@ class Song
     {
         return [$this->label, $this->chords];
     }
+
+    public function label(): string
+    {
+        return $this->label;
+    }
+
+    public function chords(): array
+    {
+        return $this->chords;
+    }
 }

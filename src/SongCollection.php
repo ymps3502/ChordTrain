@@ -52,28 +52,19 @@ class SongCollection
         return array_count_values($this->labels);
     }
 
-    private function toArray()
-    {
-        return array_map(function (Song $song) {
-            return $song->toArray();
-        }, $this->songs);
-    }
-
     private function getChordCountsInLabels()
     {
-        $songs = $this->toArray();
-
         $chordCountsInLabels = [];
 
-        foreach ($songs as $i) {
-            if (!isset($chordCountsInLabels[$i[0]])) {
-                $chordCountsInLabels[$i[0]] = [];
+        foreach ($this->songs as $song) {
+            if (!isset($chordCountsInLabels[$song->label()])) {
+                $chordCountsInLabels[$song->label()] = [];
             }
-            foreach ($i[1] as $j) {
-                if ($chordCountsInLabels[$i[0]][$j] > 0) {
-                    $chordCountsInLabels[$i[0]][$j] = $chordCountsInLabels[$i[0]][$j] + 1;
+            foreach ($song->chords() as $j) {
+                if ($chordCountsInLabels[$song->label()][$j] > 0) {
+                    $chordCountsInLabels[$song->label()][$j] = $chordCountsInLabels[$song->label()][$j] + 1;
                 } else {
-                    $chordCountsInLabels[$i[0]][$j] = 1;
+                    $chordCountsInLabels[$song->label()][$j] = 1;
                 }
             }
         }
