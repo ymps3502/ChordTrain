@@ -15,6 +15,10 @@ class ClassifyService
     public function execute()
     {
         $this->trainSongs();
+        
+        $this->setLabelProbabilities();
+        $this->setChordCountsInLabels();
+        $this->setProbabilityOfChordsInLabels();
 
         return [$this->labelProbabilities, $this->probabilityOfChordsInLabels];
     }
@@ -40,10 +44,6 @@ class ClassifyService
         $this->train($paperBag, 'hard');
         $this->train($toxic, 'hard');
         $this->train($bulletproof, 'hard');
-
-        $this->setLabelProbabilities();
-        $this->setChordCountsInLabels();
-        $this->setProbabilityOfChordsInLabels();
     }
 
     function train($chords, $label)
