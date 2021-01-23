@@ -5,7 +5,6 @@ namespace ChordTrain;
 class ClassifyService
 {
     private $songs = [];
-    private $allChords = [];
     private $labels = [];
     private $labelCounts = [];
 
@@ -47,7 +46,6 @@ class ClassifyService
     {
         $this->songs[] = [$label, $chords];
         $this->labels[] = $label;
-        $this->recordChords($chords);
         $this->labelCounts($label);
     }
 
@@ -95,15 +93,6 @@ class ClassifyService
             }
         }
         return $probabilityOfChordsInLabels;
-    }
-
-    private function recordChords($chords): void
-    {
-        for ($i = 0; $i < count($chords); $i++) {
-            if (!in_array($chords[$i], $this->allChords)) {
-                $this->allChords[] = $chords[$i];
-            }
-        }
     }
 
     private function labelCounts($label): void
