@@ -33,4 +33,26 @@ class SongCollection
             return $song->toArray();
         }, $this->songs);
     }
+
+    function getChordCountsInLabels()
+    {
+        $songs = $this->toArray();
+
+        $chordCountsInLabels = [];
+
+        foreach ($songs as $i) {
+            if (!isset($chordCountsInLabels[$i[0]])) {
+                $chordCountsInLabels[$i[0]] = [];
+            }
+            foreach ($i[1] as $j) {
+                if ($chordCountsInLabels[$i[0]][$j] > 0) {
+                    $chordCountsInLabels[$i[0]][$j] = $chordCountsInLabels[$i[0]][$j] + 1;
+                } else {
+                    $chordCountsInLabels[$i[0]][$j] = 1;
+                }
+            }
+        }
+
+        return $chordCountsInLabels;
+    }
 }
