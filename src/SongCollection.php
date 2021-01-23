@@ -56,7 +56,7 @@ class SongCollection
         return $chordCountsInLabels;
     }
 
-    function getLabelProbabilities()
+    public function getLabelProbabilities()
     {
         $labelCounts = $this->labelCounts();
 
@@ -68,7 +68,7 @@ class SongCollection
         return $labelProbabilities;
     }
 
-    function getProbabilityOfChordsInLabels()
+    public function getProbabilityOfChordsInLabels()
     {
         $chordCountsInLabels = $this->getChordCountsInLabels();
 
