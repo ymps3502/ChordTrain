@@ -11,7 +11,7 @@ class SongCollection
 
     private $labels = [];
 
-    public function getNumberOfSongs()
+    private function getNumberOfSongs()
     {
         return count($this->songs);
     }
@@ -22,7 +22,7 @@ class SongCollection
         $this->labels[] = $label;
     }
 
-    public function labelCounts()
+    private function labelCounts()
     {
         return array_count_values($this->labels);
     }
@@ -56,11 +56,13 @@ class SongCollection
         return $chordCountsInLabels;
     }
 
-    function getLabelProbabilities($labelCounts, $numberOfSongs)
+    function getLabelProbabilities()
     {
+        $labelCounts = $this->labelCounts();
+
         $labelProbabilities = [];
         foreach (array_keys($labelCounts) as $label) {
-            $labelProbabilities[$label] = $labelCounts[$label] / $numberOfSongs;
+            $labelProbabilities[$label] = $labelCounts[$label] / $this->getNumberOfSongs();
         }
 
         return $labelProbabilities;

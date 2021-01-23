@@ -16,9 +16,7 @@ class ClassifyService
     {
         $this->trainSongs();
 
-        $labelCounts = $this->songCollection->labelCounts();
-
-        $labelProbabilities = $this->songCollection->getLabelProbabilities($labelCounts, $this->songCollection->getNumberOfSongs());
+        $labelProbabilities = $this->songCollection->getLabelProbabilities();
 
         $chordCountsInLabels = $this->songCollection->getChordCountsInLabels();
         $probabilityOfChordsInLabels = $this->songCollection->getProbabilityOfChordsInLabels($chordCountsInLabels);
