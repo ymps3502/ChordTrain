@@ -2,14 +2,21 @@
 
 namespace ChordTrain;
 
+use Illuminate\Support\Collection;
+
 class SongCollection
 {
     /**
      * @var Song[]
      */
-    private $songs = [];
+    private $songs;
 
     private $labels = [];
+
+    public function __construct()
+    {
+        $this->songs = new Collection();
+    }
 
     public function train($chords, $label)
     {

@@ -11,5 +11,8 @@
         "psr-4": {
             "Tests\\": "tests/"
         }
+    },
+    "require": {
+        "illuminate/support": "^8.24"
     }
 }
