@@ -11,15 +11,40 @@ class SongCollection
 
     private $labels = [];
 
-    private function getNumberOfSongs()
-    {
-        return count($this->songs);
-    }
-
     public function train($chords, $label)
     {
         $this->songs[] = new Song($label, $chords);
         $this->labels[] = $label;
+    }
+
+    public function getLabelProbabilities()
+    {
+        $labelCounts = $this->labelCounts();
+
+        $labelProbabilities = [];
+        foreach (array_keys($labelCounts) as $label) {
+            $labelProbabilities[$label] = $labelCounts[$label] / $this->getNumberOfSongs();
+        }
+
+        return $labelProbabilities;
+    }
+
+    public function getProbabilityOfChordsInLabels()
+    {
+        $chordCountsInLabels = $this->getChordCountsInLabels();
+
+        $probabilityOfChordsInLabels = $chordCountsInLabels;
+        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
+            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
+                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
+            }
+        }
+        return $probabilityOfChordsInLabels;
+    }
+
+    private function getNumberOfSongs()
+    {
+        return count($this->songs);
     }
 
     private function labelCounts()
@@ -54,30 +79,5 @@ class SongCollection
         }
 
         return $chordCountsInLabels;
-    }
-
-    public function getLabelProbabilities()
-    {
-        $labelCounts = $this->labelCounts();
-
-        $labelProbabilities = [];
-        foreach (array_keys($labelCounts) as $label) {
-            $labelProbabilities[$label] = $labelCounts[$label] / $this->getNumberOfSongs();
-        }
-
-        return $labelProbabilities;
-    }
-
-    public function getProbabilityOfChordsInLabels()
-    {
-        $chordCountsInLabels = $this->getChordCountsInLabels();
-
-        $probabilityOfChordsInLabels = $chordCountsInLabels;
-        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
-            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
-                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
-            }
-        }
-        return $probabilityOfChordsInLabels;
     }
 }
