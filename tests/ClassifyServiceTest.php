@@ -126,4 +126,24 @@ Array
 
         ], $service->execute());
     }
+
+    /**
+     * @testdox 取得各難易度權重
+     */
+    public function testGetLabelProbabilities()
+    {
+        $service = new ClassifyService();
+
+        $labelProbabilities = $service->getLabelProbabilities([
+            'easy' => 3,
+            'medium' => 3,
+            'hard' => 3,
+        ], 9);
+
+        $this->assertEquals([
+            'easy' => 0.33333333333333,
+            'medium' => 0.33333333333333,
+            'hard' => 0.33333333333333,
+        ], $labelProbabilities);
+    }
 }
