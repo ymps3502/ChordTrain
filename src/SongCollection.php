@@ -27,14 +27,14 @@ class SongCollection
         return array_count_values($this->labels);
     }
 
-    public function toArray()
+    private function toArray()
     {
         return array_map(function (Song $song) {
             return $song->toArray();
         }, $this->songs);
     }
 
-    function getChordCountsInLabels()
+    private function getChordCountsInLabels()
     {
         $songs = $this->toArray();
 
@@ -68,8 +68,10 @@ class SongCollection
         return $labelProbabilities;
     }
 
-    function getProbabilityOfChordsInLabels($chordCountsInLabels)
+    function getProbabilityOfChordsInLabels()
     {
+        $chordCountsInLabels = $this->getChordCountsInLabels();
+
         $probabilityOfChordsInLabels = $chordCountsInLabels;
         foreach (array_keys($probabilityOfChordsInLabels) as $i) {
             foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {

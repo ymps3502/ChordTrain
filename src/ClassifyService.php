@@ -18,8 +18,7 @@ class ClassifyService
 
         $labelProbabilities = $this->songCollection->getLabelProbabilities();
 
-        $chordCountsInLabels = $this->songCollection->getChordCountsInLabels();
-        $probabilityOfChordsInLabels = $this->songCollection->getProbabilityOfChordsInLabels($chordCountsInLabels);
+        $probabilityOfChordsInLabels = $this->songCollection->getProbabilityOfChordsInLabels();
 
         return [$labelProbabilities, $probabilityOfChordsInLabels];
     }
