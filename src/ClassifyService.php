@@ -11,7 +11,7 @@ class ClassifyService
     {
         $this->trainSongs();
 
-        $labelCounts = $this->labelCounts($this->labels);
+        $labelCounts = array_count_values($this->labels);
 
         $labelProbabilities = $this->getLabelProbabilities($labelCounts, $this->getNumberOfSongs());
         $chordCountsInLabels = $this->getChordCountsInLabels($this->songs);
@@ -93,19 +93,5 @@ class ClassifyService
             }
         }
         return $probabilityOfChordsInLabels;
-    }
-
-    private function labelCounts($labels)
-    {
-        $labelCounts = [];
-        foreach ($labels as $label) {
-            if (!!(in_array($label, array_keys($labelCounts)))) {
-                $labelCounts[$label] = $labelCounts[$label] + 1;
-            } else {
-                $labelCounts[$label] = 1;
-            }
-        }
-
-        return $labelCounts;
     }
 }
