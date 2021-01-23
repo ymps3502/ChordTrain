@@ -12,6 +12,10 @@ class ClassifyService
     {
         $this->trainSongs();
 
+        foreach ($this->labels as $label) {
+            $this->labelCounts($label);
+        }
+
         $labelProbabilities = $this->getLabelProbabilities($this->labelCounts, $this->getNumberOfSongs());
         $chordCountsInLabels = $this->getChordCountsInLabels($this->songs);
         $probabilityOfChordsInLabels = $this->getProbabilityOfChordsInLabels($chordCountsInLabels);
@@ -46,7 +50,6 @@ class ClassifyService
     {
         $this->songs[] = [$label, $chords];
         $this->labels[] = $label;
-        $this->labelCounts($label);
     }
 
     function getNumberOfSongs()
