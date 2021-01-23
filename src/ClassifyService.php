@@ -48,11 +48,7 @@ class ClassifyService
         $this->songs[] = [$label, $chords];
         $this->labels[] = $label;
         $this->recordChords($chords);
-        if (!!(in_array($label, array_keys($this->labelCounts)))) {
-            $this->labelCounts[$label] = $this->labelCounts[$label] + 1;
-        } else {
-            $this->labelCounts[$label] = 1;
-        }
+        $this->labelCounts($label);
     }
 
     function getNumberOfSongs()
@@ -107,6 +103,15 @@ class ClassifyService
             if (!in_array($chords[$i], $this->allChords)) {
                 $this->allChords[] = $chords[$i];
             }
+        }
+    }
+
+    private function labelCounts($label): void
+    {
+        if (!!(in_array($label, array_keys($this->labelCounts)))) {
+            $this->labelCounts[$label] = $this->labelCounts[$label] + 1;
+        } else {
+            $this->labelCounts[$label] = 1;
         }
     }
 }
