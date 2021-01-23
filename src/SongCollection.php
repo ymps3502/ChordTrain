@@ -55,4 +55,14 @@ class SongCollection
 
         return $chordCountsInLabels;
     }
+
+    function getLabelProbabilities($labelCounts, $numberOfSongs)
+    {
+        $labelProbabilities = [];
+        foreach (array_keys($labelCounts) as $label) {
+            $labelProbabilities[$label] = $labelCounts[$label] / $numberOfSongs;
+        }
+
+        return $labelProbabilities;
+    }
 }

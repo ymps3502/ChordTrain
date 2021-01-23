@@ -4,6 +4,7 @@ namespace Tests;
 
 use ChordTrain\Classify;
 use ChordTrain\ClassifyService;
+use ChordTrain\SongCollection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -132,7 +133,7 @@ Array
      */
     public function testGetLabelProbabilities()
     {
-        $service = new ClassifyService();
+        $service = new SongCollection();
 
         $labelProbabilities = $service->getLabelProbabilities([
             'easy' => 3,
