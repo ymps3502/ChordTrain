@@ -34,9 +34,9 @@ class SongCollection
         $chordCountsInLabels = $this->getChordCountsInLabels();
 
         $probabilityOfChordsInLabels = $chordCountsInLabels;
-        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
-            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
-                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
+        foreach (array_keys($probabilityOfChordsInLabels) as $label) {
+            foreach (array_keys($probabilityOfChordsInLabels[$label]) as $chord) {
+                $probabilityOfChordsInLabels[$label][$chord] = $probabilityOfChordsInLabels[$label][$chord] * 1.0 / $this->getNumberOfSongs();
             }
         }
         return $probabilityOfChordsInLabels;
