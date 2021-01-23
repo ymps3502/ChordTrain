@@ -13,11 +13,6 @@ class Song
         $this->chords = $chords;
     }
 
-    public function toArray()
-    {
-        return [$this->label, $this->chords];
-    }
-
     public function label(): string
     {
         return $this->label;
