@@ -56,19 +56,25 @@ class SongCollection
     {
         $chordCountsInLabels = [];
 
-        foreach ($this->songs as $song) {
-            if (!isset($chordCountsInLabels[$song->label()])) {
-                $chordCountsInLabels[$song->label()] = [];
-            }
-            foreach ($song->chords() as $chord) {
-                if ($chordCountsInLabels[$song->label()][$chord] > 0) {
-                    $chordCountsInLabels[$song->label()][$chord] = $chordCountsInLabels[$song->label()][$chord] + 1;
-                } else {
-                    $chordCountsInLabels[$song->label()][$chord] = 1;
-                }
-            }
+        foreach (array_unique($this->labels) as $label) {
+            $chords = $this->getAllChordsByLabel($label);
+            $chordCountsInLabels[$label] = array_count_values($chords);
         }
 
         return $chordCountsInLabels;
+    }
+
+    private function getAllChordsByLabel($label): array
+    {
+        $allChords = [];
+        foreach ($this->songs as $song) {
+            if ($song->label() != $label) {
+                continue;
+            }
+
+            array_push($allChords, ... $song->chords());
+        }
+
+        return $allChords;
     }
 }
