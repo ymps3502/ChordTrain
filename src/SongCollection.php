@@ -60,11 +60,11 @@ class SongCollection
             if (!isset($chordCountsInLabels[$song->label()])) {
                 $chordCountsInLabels[$song->label()] = [];
             }
-            foreach ($song->chords() as $j) {
-                if ($chordCountsInLabels[$song->label()][$j] > 0) {
-                    $chordCountsInLabels[$song->label()][$j] = $chordCountsInLabels[$song->label()][$j] + 1;
+            foreach ($song->chords() as $chord) {
+                if ($chordCountsInLabels[$song->label()][$chord] > 0) {
+                    $chordCountsInLabels[$song->label()][$chord] = $chordCountsInLabels[$song->label()][$chord] + 1;
                 } else {
-                    $chordCountsInLabels[$song->label()][$j] = 1;
+                    $chordCountsInLabels[$song->label()][$chord] = 1;
                 }
             }
         }
