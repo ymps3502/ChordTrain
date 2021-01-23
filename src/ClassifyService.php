@@ -8,7 +8,6 @@ class ClassifyService
     private $allChords = [];
     private $labels = [];
     private $labelCounts = [];
-    private $chordCountsInLabels = [];
     private $probabilityOfChordsInLabels = [];
 
     public function execute()
@@ -16,8 +15,8 @@ class ClassifyService
         $this->trainSongs();
 
         $labelProbabilities = $this->getLabelProbabilities($this->labelCounts, $this->getNumberOfSongs());
-        $this->setChordCountsInLabels();
-        $this->setProbabilityOfChordsInLabels();
+        $chordCountsInLabels = $this->getChordCountsInLabels($this->songs);
+        $this->setProbabilityOfChordsInLabels($chordCountsInLabels);
 
         return [$labelProbabilities, $this->probabilityOfChordsInLabels];
     }
@@ -76,25 +75,29 @@ class ClassifyService
         return $labelProbabilities;
     }
 
-    function setChordCountsInLabels()
+    function getChordCountsInLabels($songs)
     {
-        foreach ($this->songs as $i) {
-            if (!isset($this->chordCountsInLabels[$i[0]])) {
-                $this->chordCountsInLabels[$i[0]] = [];
+        $chordCountsInLabels = [];
+
+        foreach ($songs as $i) {
+            if (!isset($chordCountsInLabels[$i[0]])) {
+                $chordCountsInLabels[$i[0]] = [];
             }
             foreach ($i[1] as $j) {
-                if ($this->chordCountsInLabels[$i[0]][$j] > 0) {
-                    $this->chordCountsInLabels[$i[0]][$j] = $this->chordCountsInLabels[$i[0]][$j] + 1;
+                if ($chordCountsInLabels[$i[0]][$j] > 0) {
+                    $chordCountsInLabels[$i[0]][$j] = $chordCountsInLabels[$i[0]][$j] + 1;
                 } else {
-                    $this->chordCountsInLabels[$i[0]][$j] = 1;
+                    $chordCountsInLabels[$i[0]][$j] = 1;
                 }
             }
         }
+
+        return $chordCountsInLabels;
     }
 
-    function setProbabilityOfChordsInLabels()
+    function setProbabilityOfChordsInLabels($chordCountsInLabels)
     {
-        $this->probabilityOfChordsInLabels = $this->chordCountsInLabels;
+        $this->probabilityOfChordsInLabels = $chordCountsInLabels;
         foreach (array_keys($this->probabilityOfChordsInLabels) as $i) {
             foreach (array_keys($this->probabilityOfChordsInLabels[$i]) as $j) {
                 $this->probabilityOfChordsInLabels[$i][$j] = $this->probabilityOfChordsInLabels[$i][$j] * 1.0 / count($this->songs);
