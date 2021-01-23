@@ -4,23 +4,23 @@ namespace ChordTrain;
 
 class ClassifyService
 {
-    /**
-     * @var Song[]
-     */
-    private $songs = [];
-    private $labels = [];
+    /** @var SongCollection */
+    private $songCollection;
+
+    public function __construct()
+    {
+        $this->songCollection = new SongCollection();
+    }
 
     public function execute()
     {
         $this->trainSongs();
 
-        $labelCounts = array_count_values($this->labels);
+        $labelCounts = $this->songCollection->labelCounts();
 
         $labelProbabilities = $this->getLabelProbabilities($labelCounts, $this->getNumberOfSongs());
 
-        $songs = array_map(function (Song $song) {
-            return $song->toArray();
-        }, $this->songs);
+        $songs = $this->songCollection->toArray();
 
         $chordCountsInLabels = $this->getChordCountsInLabels($songs);
         $probabilityOfChordsInLabels = $this->getProbabilityOfChordsInLabels($chordCountsInLabels);
@@ -53,13 +53,12 @@ class ClassifyService
 
     function train($chords, $label)
     {
-        $this->songs[] = new Song($label, $chords);
-        $this->labels[] = $label;
+        $this->songCollection->train($chords, $label);
     }
 
     function getNumberOfSongs()
     {
-        return count($this->songs);
+        return $this->songCollection->getNumberOfSongs();
     }
 
     function getLabelProbabilities($labelCounts, $numberOfSongs)
