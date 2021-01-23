@@ -11,8 +11,6 @@ class SongCollection
      */
     private $songs;
 
-    private $labels = [];
-
     public function __construct()
     {
         $this->songs = new Collection();
@@ -21,7 +19,6 @@ class SongCollection
     public function train($chords, $label)
     {
         $this->songs[] = new Song($label, $chords);
-        $this->labels[] = $label;
     }
 
     public function getLabelProbabilities()
@@ -56,14 +53,22 @@ class SongCollection
 
     private function labelCounts()
     {
-        return array_count_values($this->labels);
+        $allLabels = $this->songs->map(function (Song $song) {
+            return $song->label();
+        });
+
+        return array_count_values($allLabels->toArray());
     }
 
     private function getChordCountsInLabels()
     {
         $chordCountsInLabels = [];
 
-        foreach (array_unique($this->labels) as $label) {
+        $labels = $this->songs->map(function (Song $song) {
+            return $song->label();
+        })->unique();
+
+        foreach ($labels as $label) {
             $chords = $this->getAllChordsByLabel($label);
             $chordCountsInLabels[$label] = array_count_values($chords);
         }
