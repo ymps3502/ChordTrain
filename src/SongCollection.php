@@ -65,4 +65,15 @@ class SongCollection
 
         return $labelProbabilities;
     }
+
+    function getProbabilityOfChordsInLabels($chordCountsInLabels)
+    {
+        $probabilityOfChordsInLabels = $chordCountsInLabels;
+        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
+            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
+                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
+            }
+        }
+        return $probabilityOfChordsInLabels;
+    }
 }

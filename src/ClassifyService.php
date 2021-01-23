@@ -21,7 +21,7 @@ class ClassifyService
         $labelProbabilities = $this->songCollection->getLabelProbabilities($labelCounts, $this->getNumberOfSongs());
 
         $chordCountsInLabels = $this->songCollection->getChordCountsInLabels();
-        $probabilityOfChordsInLabels = $this->getProbabilityOfChordsInLabels($chordCountsInLabels);
+        $probabilityOfChordsInLabels = $this->songCollection->getProbabilityOfChordsInLabels($chordCountsInLabels);
 
         return [$labelProbabilities, $probabilityOfChordsInLabels];
     }
@@ -57,16 +57,5 @@ class ClassifyService
     function getNumberOfSongs()
     {
         return $this->songCollection->getNumberOfSongs();
-    }
-
-    function getProbabilityOfChordsInLabels($chordCountsInLabels)
-    {
-        $probabilityOfChordsInLabels = $chordCountsInLabels;
-        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
-            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
-                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / $this->getNumberOfSongs();
-            }
-        }
-        return $probabilityOfChordsInLabels;
     }
 }
