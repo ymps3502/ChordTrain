@@ -8,7 +8,6 @@ class ClassifyService
     private $allChords = [];
     private $labels = [];
     private $labelCounts = [];
-    private $probabilityOfChordsInLabels = [];
 
     public function execute()
     {
@@ -16,9 +15,9 @@ class ClassifyService
 
         $labelProbabilities = $this->getLabelProbabilities($this->labelCounts, $this->getNumberOfSongs());
         $chordCountsInLabels = $this->getChordCountsInLabels($this->songs);
-        $this->setProbabilityOfChordsInLabels($chordCountsInLabels);
+        $probabilityOfChordsInLabels = $this->getProbabilityOfChordsInLabels($chordCountsInLabels);
 
-        return [$labelProbabilities, $this->probabilityOfChordsInLabels];
+        return [$labelProbabilities, $probabilityOfChordsInLabels];
     }
 
     private function trainSongs(): void
@@ -95,13 +94,14 @@ class ClassifyService
         return $chordCountsInLabels;
     }
 
-    function setProbabilityOfChordsInLabels($chordCountsInLabels)
+    function getProbabilityOfChordsInLabels($chordCountsInLabels)
     {
-        $this->probabilityOfChordsInLabels = $chordCountsInLabels;
-        foreach (array_keys($this->probabilityOfChordsInLabels) as $i) {
-            foreach (array_keys($this->probabilityOfChordsInLabels[$i]) as $j) {
-                $this->probabilityOfChordsInLabels[$i][$j] = $this->probabilityOfChordsInLabels[$i][$j] * 1.0 / count($this->songs);
+        $probabilityOfChordsInLabels = $chordCountsInLabels;
+        foreach (array_keys($probabilityOfChordsInLabels) as $i) {
+            foreach (array_keys($probabilityOfChordsInLabels[$i]) as $j) {
+                $probabilityOfChordsInLabels[$i][$j] = $probabilityOfChordsInLabels[$i][$j] * 1.0 / count($this->songs);
             }
         }
+        return $probabilityOfChordsInLabels;
     }
 }
