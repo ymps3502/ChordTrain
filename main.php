@@ -24,16 +24,14 @@ function train($chords, $label)
 {
     $GLOBALS['songs'][] = [$label, $chords];
     $GLOBALS['label'][] = $label;
-    for ($i = 0; $i < count($chords); $i++) {
-        if (!isset($GLOBALS['allChords']) || !in_array($chords[$i], $GLOBALS['allChords'])) {
-            $GLOBALS['allChords'][] = $chords[$i];
+    foreach ($chords as $chord) {
+        if (!in_array($chord, $GLOBALS['allChords'] ?? [])) {
+            $GLOBALS['allChords'][] = $chord;
         }
     }
-    if (isset($GLOBALS['labelCounts']) && !!(in_array($label, array_keys($GLOBALS['labelCounts'])))) {
-        $GLOBALS['labelCounts'][$label] = $GLOBALS['labelCounts'][$label] + 1;
-    } else {
-        $GLOBALS['labelCounts'][$label] = 1;
-    }
+    // init $GLOBALS['labelCounts'][$label]
+    $GLOBALS['labelCounts'][$label] = $GLOBALS['labelCounts'][$label] ?? 0;
+    $GLOBALS['labelCounts'][$label]++;
 }
 
 function getNumberOfSongs()
