@@ -25,11 +25,11 @@ function train($chords, $label)
     $GLOBALS['songs'][] = [$label, $chords];
     $GLOBALS['label'][] = $label;
     for ($i = 0; $i < count($chords); $i++) {
-        if (!in_array($chords[$i], $GLOBALS['allChords'])) {
+        if (!isset($GLOBALS['allChords']) || !in_array($chords[$i], $GLOBALS['allChords'])) {
             $GLOBALS['allChords'][] = $chords[$i];
         }
     }
-    if (!!(in_array($label, array_keys($GLOBALS['labelCounts'])))) {
+    if (isset($GLOBALS['labelCounts']) && !!(in_array($label, array_keys($GLOBALS['labelCounts'])))) {
         $GLOBALS['labelCounts'][$label] = $GLOBALS['labelCounts'][$label] + 1;
     } else {
         $GLOBALS['labelCounts'][$label] = 1;
@@ -56,7 +56,7 @@ function setChordCountsInLabels()
             $GLOBALS['chordCountsInLabels'][$i[0]] = [];
         }
         foreach ($i[1] as $j) {
-            if ($GLOBALS['chordCountsInLabels'][$i[0]][$j] > 0) {
+            if (isset($GLOBALS['chordCountsInLabels'][$i[0]][$j])) {
                 $GLOBALS['chordCountsInLabels'][$i[0]][$j] = $GLOBALS['chordCountsInLabels'][$i[0]][$j] + 1;
             } else {
                 $GLOBALS['chordCountsInLabels'][$i[0]][$j] = 1;
@@ -96,8 +96,8 @@ function classify($chords){
     foreach (array_keys($ttal) as $obj) {
         $first = $GLOBALS['labelProbabilities'][$obj] + 1.01;
         foreach ($chords as $chord) {
-            $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$obj][$chord];
-            if (!isset($probabilityOfChordInLabel)) {
+            $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$obj][$chord] ?? 0;
+            if (empty($probabilityOfChordInLabel)) {
                 $first + 1.01;
             } else {
                 $first = $first * ($probabilityOfChordInLabel + 1.01);
