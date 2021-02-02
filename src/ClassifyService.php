@@ -20,7 +20,15 @@ class ClassifyService
 
         $probabilityOfChordsInLabels = $this->songCollection->getProbabilityOfChordsInLabels();
 
-        return [$labelProbabilities, $probabilityOfChordsInLabels];
+        $classify = new Classify($labelProbabilities, $probabilityOfChordsInLabels);
+
+        print_r($labelProbabilities);
+        $c1 = $classify->classify(['d', 'g', 'e', 'dm']);
+        print_r($c1);
+
+        print_r($labelProbabilities);
+        $c2 = $classify->classify(['f#m7', 'a', 'dadd9', 'dmaj7', 'bm', 'bm7', 'd', 'f#m']);
+        print_r($c2);
     }
 
     private function trainSongs(): void
