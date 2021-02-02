@@ -20,9 +20,21 @@ $labelProbabilities = [];
 $chordCountsInLabels = [];
 $probabilityOfChordsInLabels = [];
 
+class Song
+{
+    public $chords;
+    public $label;
+
+    public function __construct(array $chords, string $label)
+    {
+        $this->chords = $chords;
+        $this->label = $label;
+    }
+}
+
 function train($chords, $label)
 {
-    $GLOBALS['songs'][] = [$label, $chords];
+    $GLOBALS['songs'][] = new Song($chords, $label);
     $GLOBALS['label'][] = $label;
     foreach ($chords as $chord) {
         if (!in_array($chord, $GLOBALS['allChords'] ?? [])) {
@@ -49,17 +61,15 @@ function setLabelProbabilities()
 
 function setChordCountsInLabels()
 {
-    foreach ($GLOBALS['songs'] as $i) {
-        if (!isset($GLOBALS['chordCountsInLabels'][$i[0]])) {
-            $GLOBALS['chordCountsInLabels'][$i[0]] = [];
+    /** @var Song $song */
+    foreach ($GLOBALS['songs'] as $song) {
+        $label = $song->label;
+        $chordCountsInLabels = $GLOBALS['chordCountsInLabels'][$label] ?? [];
+        foreach ($song->chords as $chord) {
+            $chordCountsInLabels[$chord] = $chordCountsInLabels[$chord] ?? 0;
+            $chordCountsInLabels[$chord]++;
         }
-        foreach ($i[1] as $j) {
-            if (isset($GLOBALS['chordCountsInLabels'][$i[0]][$j])) {
-                $GLOBALS['chordCountsInLabels'][$i[0]][$j] = $GLOBALS['chordCountsInLabels'][$i[0]][$j] + 1;
-            } else {
-                $GLOBALS['chordCountsInLabels'][$i[0]][$j] = 1;
-            }
-        }
+        $GLOBALS['chordCountsInLabels'][$label] = $chordCountsInLabels;
     }
 }
 
