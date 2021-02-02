@@ -105,10 +105,8 @@ function classify($chords){
         $first = $GLOBALS['labelProbabilities'][$obj] + 1.01;
         foreach ($chords as $chord) {
             $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$obj][$chord] ?? 0;
-            if (empty($probabilityOfChordInLabel)) {
-                $first + 1.01;
-            } else {
-                $first = $first * ($probabilityOfChordInLabel + 1.01);
+            if (!empty($probabilityOfChordInLabel)) {
+                $first *= ($probabilityOfChordInLabel + 1.01);
             }
             $classified[$obj] = $first;
         }
