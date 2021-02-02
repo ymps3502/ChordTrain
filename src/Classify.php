@@ -16,14 +16,14 @@ class Classify
 
     public function classify($chords){
         $classified = [];
-        foreach (array_keys($this->labelProbabilities) as $obj) {
-            $first = $this->labelProbabilities[$obj] + 1.01;
+        foreach (array_keys($this->labelProbabilities) as $label) {
+            $first = $this->labelProbabilities[$label] + 1.01;
             foreach ($chords as $chord) {
-                $probabilityOfChordInLabel = $this->probabilityOfChordsInLabels[$obj][$chord];
+                $probabilityOfChordInLabel = $this->probabilityOfChordsInLabels[$label][$chord];
                 if (isset($probabilityOfChordInLabel)) {
                     $first = $first * ($probabilityOfChordInLabel + 1.01);
                 }
-                $classified[$obj] = $first;
+                $classified[$label] = $first;
             }
         }
         return $classified;
