@@ -20,9 +20,7 @@ class Classify
             $first = $this->labelProbabilities[$obj] + 1.01;
             foreach ($chords as $chord) {
                 $probabilityOfChordInLabel = $this->probabilityOfChordsInLabels[$obj][$chord];
-                if (!isset($probabilityOfChordInLabel)) {
-                    $first + 1.01;
-                } else {
+                if (isset($probabilityOfChordInLabel)) {
                     $first = $first * ($probabilityOfChordInLabel + 1.01);
                 }
                 $classified[$obj] = $first;
