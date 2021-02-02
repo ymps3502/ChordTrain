@@ -97,18 +97,19 @@ setLabelProbabilities();
 setChordCountsInLabels();
 setProbabilityOfChordsInLabels();
 
-function classify($chords){
+function classify($chords)
+{
     $ttal = $GLOBALS['labelProbabilities'];
     print_r($ttal);
     $classified = [];
-    foreach (array_keys($ttal) as $obj) {
-        $first = $GLOBALS['labelProbabilities'][$obj] + 1.01;
+    foreach ($ttal as $label => $probabilities) {
+        $first = $probabilities + 1.01;
         foreach ($chords as $chord) {
-            $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$obj][$chord] ?? 0;
+            $probabilityOfChordInLabel = $GLOBALS['probabilityOfChordsInLabels'][$label][$chord] ?? 0;
             if (!empty($probabilityOfChordInLabel)) {
                 $first *= ($probabilityOfChordInLabel + 1.01);
             }
-            $classified[$obj] = $first;
+            $classified[$label] = $first;
         }
     }
     print_r($classified);
